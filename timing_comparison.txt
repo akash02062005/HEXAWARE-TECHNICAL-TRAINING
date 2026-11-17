@@ -1,0 +1,16 @@
+Set 3 - Telecom Low-Balance Follow-up : Timing comparison (Task 4)
+Server : MySQL 8.0.46, InnoDB, autocommit ON, binary log ON
+Load   : 18 sample + 50,000 load-test subscribers
+Rows   : 4,505 ACTIVE prepaid subscribers with balance < 50 units
+
+Run   Cursor (ms)   INSERT ... SELECT (ms)
+1        2,355.2          168.0
+2        2,170.3          124.1
+3        2,165.1          110.6
+Avg      2,230.2          134.2
+Relative   16.6 x           1.0 x
+
+Both methods inserted the same 4,505 notification rows in every run.
+The cursor runs one FETCH + one INSERT (and one commit) per row; the
+INSERT ... SELECT does the whole job in one statement and one commit,
+so it was about 16.6 times faster.
